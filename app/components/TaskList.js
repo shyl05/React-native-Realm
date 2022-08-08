@@ -13,7 +13,6 @@ export const TaskList = ({tasks, onToggleTaskStatus, onDeleteTask}) => {
             task={item}
             onToggleStatus={() => onToggleTaskStatus(item)}
             onDelete={() => onDeleteTask(item)}
-            // Don't spread the Realm item as such: {...item}
           />
         )}
       />

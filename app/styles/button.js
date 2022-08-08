@@ -8,7 +8,7 @@ export const buttonStyles = {
     alignItems: 'center',
     marginHorizontal: 10,
     borderRadius: 5,
-    backgroundColor: colors.purple,
+    backgroundColor: colors.header,
   },
   text: {
     color: colors.white,

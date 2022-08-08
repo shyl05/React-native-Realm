@@ -6,6 +6,7 @@ const colors = {
   white: '#FFFFFF',
   black: '#000000',
   header: '#693299',
+  danger: '#b81f1f',
 };
 
 export default colors;
