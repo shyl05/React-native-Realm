@@ -12,13 +12,13 @@ export const TaskManager = ({tasks}) => {
   const realm = useRealm();
 
   const handleAddTask = useCallback(
-    (subject, body) => {
-      if (!subject && !body) {
+    (subject, body, type) => {
+      if (!subject && !body && !type) {
         return;
       }
 
       realm.write(() => {
-        realm.create('Task', Task.generate(subject, body));
+        realm.create('Task', Task.generate(subject, body, type));
       });
     },
     [realm],

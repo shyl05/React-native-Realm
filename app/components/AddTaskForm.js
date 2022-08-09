@@ -1,4 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
+import SelectDropdown from 'react-native-select-dropdown';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import {
   View,
   Text,
@@ -15,11 +18,27 @@ import {shadows} from '../styles/shadows';
 export const AddTaskForm = ({onSubmit}) => {
   const [subject, setSubject] = useState('');
   const [body, setBody] = useState('');
+  const [type, setType] = useState('');
+  const dropdownRef = useRef({});
+
+  const typeSelect = [
+    'Medical',
+    'Fitness',
+    'Study',
+    'Work',
+    'Technology',
+    'Environment',
+    'Food',
+    'Entertainment',
+    'Sports',
+    'Social',
+  ];
 
   const handleSubmit = () => {
-    onSubmit(subject, body);
+    onSubmit(subject, body, type);
     setSubject('');
     setBody('');
+    dropdownRef.current.reset();
   };
 
   return (
@@ -41,6 +60,25 @@ export const AddTaskForm = ({onSubmit}) => {
           autoCapitalize="none"
           style={styles.textInput}
         />
+        <SelectDropdown
+          data={typeSelect}
+          defaultButtonText={'Type'}
+          ref={dropdownRef}
+          buttonStyle={styles.select}
+          onSelect={selectedItem => {
+            setType(selectedItem);
+          }}
+          buttonTextAfterSelection={(selectedItem, index) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          renderDropdownIcon={() => (
+            <Ionicons name="chevron-down-sharp" size={30} />
+          )}
+          dropdownIconPosition={'left'}
+        />
       </View>
       <Pressable onPress={handleSubmit} style={styles.submit}>
         <Text style={styles.icon}>＋</Text>
@@ -57,7 +95,7 @@ const styles = StyleSheet.create({
   },
   inputs: {
     width: '85%',
-    height: 110,
+    height: 180,
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
@@ -78,5 +116,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     ...buttonStyles.text,
+  },
+  select: {
+    width: '85%',
   },
 });

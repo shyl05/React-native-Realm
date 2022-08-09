@@ -1,80 +1,111 @@
 /* eslint-disable prettier/prettier */
-import React,{useMemo} from 'react';
-import {View, StyleSheet, Text, FlatList} from 'react-native';
+import React,{useMemo,useCallback} from 'react';
+import {StyleSheet, Text, ScrollView} from 'react-native';
 import {Task} from '../models/Task';
 import {TaskRealmContext} from '../models';
-import {Card} from '@rneui/base';
+import {ListItem, Button} from '@rneui/base';
 import colors from '../styles/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const {useQuery} = TaskRealmContext;
+const {useRealm} = TaskRealmContext;
 
 export const Subjects = () => {
   const result = useQuery(Task);
+  const realm = useRealm();
   const tasks = useMemo(() => result.sorted('createdAt'), [result]);
 
-  const Item = ({task}) => {
-    return (
-      <Card containerStyle={styles.card} wrapperStyle={styles.cardInner}>
-        <Card.Title style={styles.cardTitle}>{task.subject}</Card.Title>
-        <Card.Divider style={styles.cardDiv} />
-        <View style={styles.cardBody}>
-          <Text style={styles.cardDate}>{task.createdAt.toString()}</Text>
-          <Text style={styles.cardBodyText}>{task.body}</Text>
-          {task.isComplete === true ? (
-            <Ionicons name="checkmark-circle" size={20} color={colors.done}/>
-          ) : (
-            <Ionicons name="close-circle" size={20} color={colors.danger}/>
-          )}
-        </View>
-      </Card>
-    );
-  };
+  const handleDeleteTask = useCallback(
+    task => {
+      realm.write(() => {
+        realm.delete(task);
+      });
+    },
+    [realm],
+  );
 
   return (
-    <FlatList
-      data={tasks}
-      renderItem={({item}) => (
-        <Item task={item} />
-      )}
-      keyExtractor={(task) => task._id}
-    />
+    <ScrollView style={styles.content}>
+      {tasks.map((task)=>{
+        let iconType;
+        switch (task.type){
+          case 'Medical':
+            iconType = 'bandage-outline';
+            break;
+          case 'Fitness':
+            iconType = 'barbell-sharp';
+            break;
+          case 'Study':
+            iconType = 'book-outline';
+            break;
+          case 'Work':
+            iconType = 'briefcase-outline';
+            break;
+          case 'Technology':
+            iconType = 'bulb-outline';
+            break;
+          case 'Environment':
+            iconType = 'earth-outline';
+            break;
+          case 'Food':
+            iconType = 'fast-food-outline';
+            break;
+          case 'Entertainment':
+            iconType = 'film-outline';
+            break;
+          case 'Sports':
+            iconType = 'football';
+            break;
+          case 'Social':
+            iconType = 'logo-instagram';
+            break;
+          default:
+            iconType = 'help-outline';
+        }
+
+        let taskStatus;
+        let taskColor;
+        if (task.isComplete){
+          taskStatus = 'check';
+          taskColor = colors.done;
+        }
+        else {
+          taskStatus = 'info';
+          taskColor = colors.black;
+        }
+        return (
+          <ListItem.Swipeable
+            key={task._id}
+            leftContent={() => (
+                <Button
+                  title="Status"
+                  icon={{ name: taskStatus, color: colors.white }}
+                  buttonStyle={{ minHeight: '100%', backgroundColor:taskColor }}
+                />
+              )}
+            rightContent={(reset) => (
+              <Button
+                title="Delete"
+                onPress={() => handleDeleteTask(task)}
+                icon={{ name: 'delete', color: colors.white }}
+                buttonStyle={{ minHeight: '100%', backgroundColor: colors.danger }}
+              />
+          )}>
+            <Ionicons name={iconType} size={25} color={colors.header} />
+            <ListItem.Content>
+              <ListItem.Title>{task.subject}</ListItem.Title>
+              <Text>{task.body}</Text>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem.Swipeable>
+        );
+      })}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  card:{
-    borderColor: colors.header,
-    padding: 0,
-    margin: 20,
-  },
-  cardInner:{
-    padding: 0,
-  },
-  cardTitle:{
-    fontSize : 18,
-    fontWeight: 'bold',
-    backgroundColor: colors.header,
-    color: colors.white,
-    padding: 0,
-    marginBottom: 0,
-  },
-  cardDiv:{
-    marginBottom: 0,
-    color: colors.white,
-    backgroundColor: colors.header,
-  },
-  cardBody: {
-    marginTop: 0,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cardDate:{
-    color: colors.gray,
-    fontSize: 10,
-  },
-  cardBodyText: {
-    fontSize: 16,
-  },
+content:{
+  marginTop: 10,
+},
 });

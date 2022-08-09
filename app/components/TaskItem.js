@@ -20,7 +20,7 @@ export const TaskItem = React.memo(({task, onToggleStatus, onDelete}) => {
       </Pressable>
       <View style={styles.descriptionContainer}>
         <Text numberOfLines={1} style={styles.subject}>
-          {task.subject}
+          {task.subject} - {task.type}
         </Text>
         <Text numberOfLines={1} style={styles.description}>
           {task.body}
@@ -86,7 +86,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     color: colors.danger,
     fontSize: 30,
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
+    backgroundColor: colors.gray,
   },
   icon: {
     color: colors.white,
