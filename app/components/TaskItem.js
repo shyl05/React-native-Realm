@@ -13,13 +13,9 @@ export const TaskItem = React.memo(({task, onToggleStatus, onDelete}) => {
         onPress={onToggleStatus}
         style={[styles.status, task.isComplete && styles.completed]}>
         {task.isComplete ? (
-          <Ionicons name="play-circle-outline" size={40} color={colors.white} />
+          <Ionicons name="checkmark-circle" size={40} color={colors.white} />
         ) : (
-          <Ionicons
-            name="pause-circle-outline"
-            size={40}
-            color={colors.black}
-          />
+          <Ionicons name="close-circle" size={40} color={colors.black} />
         )}
       </Pressable>
       <View style={styles.descriptionContainer}>
@@ -72,7 +68,7 @@ const styles = StyleSheet.create({
   date: {
     paddingHorizontal: 10,
     color: colors.gray,
-    fontSize: 14,
+    fontSize: 10,
   },
   status: {
     width: 50,

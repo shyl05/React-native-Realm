@@ -7,6 +7,7 @@ const colors = {
   black: '#000000',
   header: '#693299',
   danger: '#b81f1f',
+  done: '#51b344',
 };
 
 export default colors;
