@@ -15,6 +15,7 @@ export const TaskList = ({tasks, onToggleTaskStatus, onDeleteTask}) => {
             onDelete={() => onDeleteTask(item)}
           />
         )}
+        initialNumToRender={15}
       />
     </View>
   );

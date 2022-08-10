@@ -1,8 +1,7 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
 import {TaskRealmContext} from './models';
 
 import colors from './styles/colors';
@@ -16,6 +15,13 @@ const Tab = createBottomTabNavigator();
 export const AppWrapper = () => {
   const {RealmProvider} = TaskRealmContext;
 
+  const IconHeader = () => (
+    <View style={styles.navbar}>
+      <Ionicons name="logo-react" size={40} color={colors.white} />
+      <Text style={styles.navbarTitle}>RemindME</Text>
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.screen}>
       <RealmProvider>
@@ -28,13 +34,7 @@ export const AppWrapper = () => {
               tabBarOptions: {
                 showIcon: true,
               },
-              headerStyle: {
-                backgroundColor: colors.header,
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
+              header: props => <IconHeader {...props} />,
             })}>
             <Tab.Screen
               name="Home"
@@ -66,5 +66,17 @@ export const AppWrapper = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+  },
+  navbar: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    padding: 10,
+    backgroundColor: colors.header,
+  },
+  navbarTitle: {
+    fontSize: 25,
+    padding: 5,
+    paddingLeft: 10,
+    color: colors.white,
   },
 });

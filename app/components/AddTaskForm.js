@@ -89,9 +89,9 @@ export const AddTaskForm = ({onSubmit}) => {
 
 const styles = StyleSheet.create({
   form: {
-    marginBottom: 20,
+    marginBottom: 10,
     flexDirection: 'row',
-    ...shadows,
+    backgroundColor: colors.white,
   },
   inputs: {
     width: '85%',
@@ -106,10 +106,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: colors.white,
     fontSize: 17,
+    color: colors.header,
+    textDecorationLine: 'none',
+    borderColor: colors.header,
+    borderWidth: 1,
   },
   submit: {
     ...buttonStyles.button,
-    width: 50,
+    width: '15%',
     height: 50,
     paddingHorizontal: 0,
     paddingVertical: 0,
@@ -118,6 +122,8 @@ const styles = StyleSheet.create({
     ...buttonStyles.text,
   },
   select: {
-    width: '85%',
+    width: '100%',
+    borderColor: colors.header,
+    borderWidth: 1,
   },
 });

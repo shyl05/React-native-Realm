@@ -3,7 +3,7 @@ import colors from './colors';
 
 export const shadows = Platform.select({
   ios: {
-    shadowColor: colors.black,
+    shadowColor: colors.white,
     shadowOffset: {
       width: 0,
       height: 4,

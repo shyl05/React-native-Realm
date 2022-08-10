@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import React,{useMemo,useCallback} from 'react';
-import {StyleSheet, Text, ScrollView} from 'react-native';
+import {StyleSheet, Text, ScrollView, Alert} from 'react-native';
 import {Task} from '../models/Task';
 import {TaskRealmContext} from '../models';
-import {ListItem, Button} from '@rneui/base';
+import {ListItem, Button} from '@rneui/themed';
 import colors from '../styles/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -19,6 +19,15 @@ export const Subjects = () => {
     task => {
       realm.write(() => {
         realm.delete(task);
+      });
+    },
+    [realm],
+  );
+
+  const handleToggleTaskStatus = useCallback(
+    task => {
+      realm.write(() => {
+        task.isComplete = !task.isComplete;
       });
     },
     [realm],
@@ -79,6 +88,7 @@ export const Subjects = () => {
             leftContent={() => (
                 <Button
                   title="Status"
+                  onPress={() => handleToggleTaskStatus(task)}
                   icon={{ name: taskStatus, color: colors.white }}
                   buttonStyle={{ minHeight: '100%', backgroundColor:taskColor }}
                 />
